@@ -67,23 +67,23 @@ $h4-font-size: 0.9rem !default;
 
 // The monospace face used for tables, notes, and journal text. Comes from
 // _brand.yml (typography: monospace).
-$lv-mono: "IBM Plex Mono", monospace !default;
+$tweed-mono: "IBM Plex Mono", monospace !default;
 
 // A sans-serif for small status text. Aktiv Grotesk is an Adobe font, so it
 // only appears for readers who have it installed; everyone else sees the
 // system sans-serif.
-$lv-sans: "Aktiv Grotesk", system-ui, sans-serif !default;
+$tweed-sans: "Aktiv Grotesk", system-ui, sans-serif !default;
 
 // Journal callout palette: a pale blue-gray field with a near-black rule.
-$lv-journal-bg: #e4edf2 !default;
-$lv-journal-accent: #05081c !default;
+$tweed-journal-bg: #e4edf2 !default;
+$tweed-journal-accent: #05081c !default;
 
 // Cover image heights at desktop and phone widths.
-$lv-hero-height: 520px !default;
-$lv-hero-height-sm: 280px !default;
+$tweed-hero-height: 520px !default;
+$tweed-hero-height-sm: 280px !default;
 
 // The width at which layouts switch to their phone versions.
-$lv-breakpoint-sm: 768px !default;
+$tweed-breakpoint-sm: 768px !default;
 
 
 /*-- scss:rules --*/
@@ -98,7 +98,7 @@ $lv-breakpoint-sm: 768px !default;
 .quarto-title-block {
   padding-top: 2.75rem;            // breathing room below the cover image
 
-  @media (max-width: $lv-breakpoint-sm) {
+  @media (max-width: $tweed-breakpoint-sm) {
     padding-top: 1.75rem;
   }
 }
@@ -220,11 +220,11 @@ main.content {
 // 6. Tables
 // -----------------------------------------------------------------------------
 // Data tables are set in the monospace face at a small size so columns of
-// numbers line up. Rule weights and borders come from lv_table() in R.
+// numbers line up. Rule weights and borders come from tweed_table() in R.
 
 table.tinytable td,
 table.tinytable th {
-  font-family: $lv-mono;
+  font-family: $tweed-mono;
   font-size: 0.75rem;
 }
 
@@ -251,7 +251,7 @@ table.compact-design-tbl td {
     text-align: left;
     vertical-align: top;
     line-height: 1.2;
-    font-family: $lv-mono;
+    font-family: $tweed-mono;
     font-size: 0.75rem;
     padding: 0.5rem 0.4rem;
   }
@@ -290,14 +290,14 @@ table.compact-design-tbl td {
 
 .report-hero {
   width: 100%;
-  height: $lv-hero-height;
+  height: $tweed-hero-height;
   margin: 0;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
 
-  @media (max-width: $lv-breakpoint-sm) {
-    height: $lv-hero-height-sm;
+  @media (max-width: $tweed-breakpoint-sm) {
+    height: $tweed-hero-height-sm;
   }
 }
 
@@ -325,11 +325,9 @@ table.compact-design-tbl td {
 // -----------------------------------------------------------------------------
 // A small image (often a GIF) that text wraps around. On phones it stops
 // floating and centers on its own line. Usage:
-//   ![](images/dog.gif){.lv-float-right}
-//
-// .dose-phase-gif is the original name of .lv-float-right and still works.
+//   ![](images/dog.gif){.tweed-float-right}
 
-@mixin lv-float-image($side) {
+@mixin tweed-float-image($side) {
   float: $side;
   width: min(38%, 300px);
   max-height: 300px;
@@ -341,7 +339,7 @@ table.compact-design-tbl td {
     margin: 0.2rem 1.5rem 1rem 0;
   }
 
-  @media (max-width: $lv-breakpoint-sm) {
+  @media (max-width: $tweed-breakpoint-sm) {
     float: none;
     display: block;
     width: min(100%, 300px);
@@ -349,13 +347,12 @@ table.compact-design-tbl td {
   }
 }
 
-.lv-float-right,
-.dose-phase-gif {
-  @include lv-float-image(right);
+.tweed-float-right {
+  @include tweed-float-image(right);
 }
 
-.lv-float-left {
-  @include lv-float-image(left);
+.tweed-float-left {
+  @include tweed-float-image(left);
 }
 
 
@@ -365,16 +362,16 @@ table.compact-design-tbl td {
 
 // Journal callout: a collapsible callout styled as a personal note, with the
 // body set in the monospace face. Usage:
-//   ::: {.callout-note .fitness-journal-callout appearance="simple" icon=false}
+//   ::: {.callout-note .journal-callout appearance="simple" icon=false}
 //   ## Heading
-//   ::: {.fit-journal}
+//   ::: {.journal-text}
 //   Journal text...
 //   :::
 //   :::
-.fitness-journal-callout.callout {
-  border-left: 4px solid $lv-journal-accent;
+.journal-callout.callout {
+  border-left: 4px solid $tweed-journal-accent;
   border-radius: 0;
-  background-color: $lv-journal-bg;
+  background-color: $tweed-journal-bg;
 
   .callout-body {
     background-color: transparent;
@@ -383,12 +380,12 @@ table.compact-design-tbl td {
   .callout-title-container,
   .callout-title,
   summary {
-    color: $lv-journal-accent;
+    color: $tweed-journal-accent;
   }
 }
 
-.fit-journal p {
-  font-family: $lv-mono;
+.journal-text p {
+  font-family: $tweed-mono;
   font-size: 0.8rem;
 }
 
@@ -396,7 +393,7 @@ table.compact-design-tbl td {
 // box holds the whole experiment; the page and margin TOC stay untouched.
 // Usage:
 //   ::: {.active-experiment}
-//   ### Active Experiment: The Zone-5 Transition Probe
+//   ### Active Experiment: Name
 //   [content, figures, tables]
 //   ::: {.active-experiment-status}
 //   Status line
@@ -438,7 +435,7 @@ table.compact-design-tbl td {
     margin-top: 1.25rem;
     padding-top: 1rem;
     border-top: 1px solid $brand-gray;
-    font-family: $lv-sans;
+    font-family: $tweed-sans;
     font-size: 0.9em;
     line-height: 1.4;
   }
@@ -459,7 +456,7 @@ table.compact-design-tbl td {
   blockquote,
   blockquote.blockquote {
     border-color: $brand-pink;
-    font-family: $lv-mono;
+    font-family: $tweed-mono;
     font-size: 0.85rem;
     font-style: normal;
     font-weight: 400;
@@ -472,7 +469,7 @@ table.compact-design-tbl td {
 .hypotheses {
   padding-inline: 0;
 
-  @media (min-width: $lv-breakpoint-sm) {
+  @media (min-width: $tweed-breakpoint-sm) {
     padding-left: 4em;
     padding-right: 4em;
   }
@@ -495,9 +492,9 @@ mjx-container[display="true"] {
 // -----------------------------------------------------------------------------
 // 12. Footer
 // -----------------------------------------------------------------------------
-// Styles the <footer class="lv-footer"> injected by footer.html.
+// Styles the <footer class="tweed-footer"> injected by footer.html.
 
-.lv-footer {
+.tweed-footer {
   margin: 3rem 0 1rem;
   padding-top: 1rem;
   padding-bottom: 2rem;
