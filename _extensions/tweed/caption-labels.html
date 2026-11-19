@@ -1,0 +1,40 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .querySelectorAll("figcaption.quarto-float-caption")
+    .forEach(caption => {
+      const walker = document.createTreeWalker(
+        caption,
+        NodeFilter.SHOW_TEXT
+      );
+
+      let node;
+
+      while ((node = walker.nextNode())) {
+        const match = node.data.match(
+          /^(\s*)((?:Figure|Table)\s+(?:\d+(?:\.\d+)*):)/
+        );
+
+        if (!match) continue;
+
+        const label = document.createElement("span");
+        label.className = "float-label";
+        label.textContent = match[2];
+
+        const remainder = document.createTextNode(
+          node.data.slice(match[0].length)
+        );
+
+        node.parentNode.insertBefore(
+          document.createTextNode(match[1]),
+          node
+        );
+        node.parentNode.insertBefore(label, node);
+        node.parentNode.insertBefore(remainder, node);
+        node.remove();
+
+        break;
+      }
+    });
+});
+</script>

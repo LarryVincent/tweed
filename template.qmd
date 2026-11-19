@@ -1,0 +1,146 @@
+---
+title: "Report Title"
+subtitle: "A longer subtitle that says what the report finds"
+author: Laurence Vincent
+date: today
+date-format: long
+bibliography: references.bib
+format:
+  tweed-html:
+    # The house theme plus this report's own rules (report.scss).
+    # Delete report.scss from the list if you don't need it.
+    theme: [flatly, brand, _extensions/tweed/tweed.scss, report.scss]
+    output-file: index.html
+    include-in-header:
+      - text: '<meta name="robots" content="noindex, noai, noimageai">'
+    # Cover image above the title. Delete this entry for no cover.
+    include-before-body:
+      - cover-hero.html
+    # Added after the house partials (caption labels, list of floats).
+    include-after-body:
+      - footer.html
+---
+
+```{r setup}
+library(tidyverse)
+library(here)
+library(scales)
+
+source(here("R/tweed.R"))
+```
+
+<!--
+  This starter doubles as a style guide: each section below shows one
+  component of the house design. Keep what you need and delete the rest.
+-->
+
+::: {.data-current}
+**Data current through** `r fmt_date(Sys.Date())`
+:::
+
+## Introduction
+
+### Why This Report Exists---Rationale {.unnumbered .unlisted}
+
+Intro subsections are unnumbered and kept out of the table of contents, so the
+report opens like an essay. Citations appear in the margin [@tufte2001].
+
+![](images/cover.jpg){.lv-float-right}
+
+A small image with `.lv-float-right` (or `.lv-float-left`) floats beside the
+text and drops onto its own line on phones. Margin notes work too.^[Footnotes
+appear in the margin because the format sets `reference-location: margin`.]
+
+### How I Kept Score---Data and Methods {.unnumbered .unlisted}
+
+A short, plain-language account of the data and methods. Detailed definitions
+belong in a Technical Notes section near the end.
+
+## Findings {#sec-findings}
+
+### A Figure
+
+```{r example-figure}
+#| label: fig-example
+#| fig-cap: "Captions sit above the figure and carry the explanation. The first sentence becomes the entry in the List of Figures and Tables."
+
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point(color = brand_color("blue-dark"), size = 2.5) +
+  geom_smooth(method = "lm", se = FALSE, color = brand_color("pink")) +
+  annotate(
+    "text", x = 5, y = 30, label = "HEAVIER CARS, FEWER MILES",
+    fontface = "bold", size = 3, color = brand_color("ink")
+  ) +
+  labs(x = "Weight (1,000 lb)", y = "Miles per gallon")
+```
+
+### A Table
+
+```{r example-table}
+#| label: tbl-example
+#| tbl-cap: "Tables use lv_table(): monospace numbers, hairline rules, and flush-left placement."
+
+mtcars |>
+  group_by(Cylinders = cyl) |>
+  summarise(Cars = n(), `Mean MPG` = round(mean(mpg), 1)) |>
+  lv_table(width = 0.6, notes = "Source: mtcars.")
+```
+
+### Tabs
+
+::: {.panel-tabset}
+## First
+Tab labels stay on one compact row and scroll sideways when they overflow.
+
+## Second
+Second tab.
+:::
+
+### Callout Components
+
+::: {.callout-note .fitness-journal-callout appearance="simple" collapse="true" icon=false}
+## Journal Callout
+
+::: {.fit-journal}
+A collapsible personal note, set in the monospace face.
+:::
+:::
+
+::: {.active-experiment}
+### Active Experiment: Name {.unnumbered .unlisted}
+
+A bordered box for a live protocol: hypotheses, figures, and tables all stay
+inside it.
+
+::: {.active-experiment-status}
+Status: three of eight sessions complete.
+:::
+:::
+
+::: {.revision}
+> **Revised November 19, 2026.** A pink-ruled band marks text that changed
+> since an earlier version.
+:::
+
+::: {.hypotheses}
+1. **H1.** Indented hypotheses or design requirements.
+2. **H2.** The indent drops away on phones.
+:::
+
+## Technical Notes {#sec-technical-notes}
+
+Measurement definitions, eligibility rules, and model specifications.
+
+## List of Figures and Tables {.unnumbered}
+
+<!-- Filled in automatically from the figure and table captions. -->
+::: {#list-of-floats}
+:::
+
+## Terms of Use {.unnumbered #terms-of-use}
+
+Terms of use.
+
+## AI Use Disclosure {.unnumbered #ai-use-disclosure}
+
+How AI tools were used in preparing this report.

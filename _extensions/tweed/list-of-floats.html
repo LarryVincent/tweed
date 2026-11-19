@@ -1,0 +1,90 @@
+<style>
+  #list-of-floats h3 {
+    margin-top: 1.5rem;
+  }
+
+  #list-of-floats ol {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  #list-of-floats li {
+    font-size: 0.9em;
+    line-height: 1.35;
+    margin-bottom: 0.45rem;
+  }
+
+  #list-of-floats .float-label {
+    font-weight: 600;
+    margin-right: 0.35em;
+  }
+</style>
+
+<script>
+// Builds the List of Figures and Tables from the captions Quarto has already
+// numbered. Runs after caption-labels.html, so it reads plain caption text.
+document.addEventListener("DOMContentLoaded", () => {
+  const target = document.getElementById("list-of-floats");
+  if (!target) return;
+
+  // First sentence of a caption, so long captions stay scannable. A sentence
+  // ends at . ? or ! followed by a capital letter or the end of the caption,
+  // so abbreviations such as "34-in. goal" don't cut it short.
+  const firstSentence = text => {
+    const match = text.match(/^(.+?[.?!])(\s+(?=[A-Z])|$)/s);
+    return (match ? match[1] : text).trim();
+  };
+
+  const collect = kind => {
+    const items = [];
+    document
+      .querySelectorAll(`div.quarto-float[id^="${kind}-"]`)
+      .forEach(float => {
+        if (target.contains(float)) return;
+        const caption = float.querySelector("figcaption.quarto-float-caption");
+        if (!caption) return;
+
+        // Drop footnote markers before reading the caption text.
+        const clone = caption.cloneNode(true);
+        clone.querySelectorAll("sup, .footnote-ref").forEach(el => el.remove());
+        const text = clone.textContent.replace(/ /g, " ").trim();
+
+        const match = text.match(/^((?:Figure|Table)\s+\d+(?:\.\d+)*):\s*(.*)$/s);
+        if (!match) return;
+
+        items.push({ id: float.id, label: match[1], title: firstSentence(match[2]) });
+      });
+    return items;
+  };
+
+  const section = (heading, items) => {
+    if (items.length === 0) return;
+
+    const h = document.createElement("h3");
+    h.className = "anchored";
+    h.textContent = heading;
+    target.appendChild(h);
+
+    const list = document.createElement("ol");
+    items.forEach(item => {
+      const li = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = `#${item.id}`;
+
+      const label = document.createElement("span");
+      label.className = "float-label";
+      label.textContent = `${item.label}.`;
+
+      link.appendChild(label);
+      link.appendChild(document.createTextNode(item.title));
+      li.appendChild(link);
+      list.appendChild(li);
+    });
+    target.appendChild(list);
+  };
+
+  section("Figures", collect("fig"));
+  section("Tables", collect("tbl"));
+});
+</script>

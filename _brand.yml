@@ -1,0 +1,39 @@
+color:
+  palette:
+    ink: "#111111"
+    blue-dark: "#023EA8"
+    blue: "#0096C7"
+    blue-light: "#90E0EF"
+    pink: "#F62477"
+    burgundy: "#95172C"
+    orange: "#EE9B00"
+    red-orange: "#CC3300"
+    green: "#339966"
+    gray: "#6C757D"
+    rule: "#DEDEDE"
+    soft-gray: "#F3F3F3"
+    white: "#FFFFFF"
+  foreground: ink
+  background: "#FFFFFF"
+  primary: blue-dark
+  secondary: "#6C757D"
+  tertiary: blue-light
+  success: "#339966"
+  info: "#0096C7"
+  warning: "#EE9B00"
+  danger: burgundy
+  link: "#F62477"
+typography:
+  fonts:
+    - family: Newsreader
+      source: google
+      weight: [300, 400, 500, 600]
+      style: [normal, italic]
+    - family: IBM Plex Mono
+      source: google
+      weight: [400, 500, 600, 700]
+  base: Newsreader
+  headings:
+    family: Newsreader
+    weight: 500
+  monospace: IBM Plex Mono

@@ -1,0 +1,7 @@
+/.quarto/
+*_cache/
+.Rproj.user/
+.Rhistory
+.RData
+.DS_Store
+_quarto_internal_scss_error.scss

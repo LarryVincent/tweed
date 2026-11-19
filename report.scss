@@ -1,0 +1,18 @@
+/* =============================================================================
+   Report-specific styles
+   -----------------------------------------------------------------------------
+   Loaded after the house theme (_extensions/tweed/tweed.scss). Put rules here
+   that belong to this report only. Anything you'd want in every report
+   belongs in the house theme instead.
+   ============================================================================= */
+
+/*-- scss:defaults --*/
+
+// Override a house variable for this report only, for example:
+// $lv-hero-height: 420px;
+
+
+/*-- scss:rules --*/
+
+// Example: tighten the header row of one wide table.
+// #tbl-wide-results thead th { line-height: 1.1; }

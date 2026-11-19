@@ -1,0 +1,508 @@
+/* =============================================================================
+   Tweed: House Theme
+   -----------------------------------------------------------------------------
+   The shared visual identity for Larry Vincent's Quarto HTML reports.
+
+   HOW IT IS LOADED
+   The tweed-html format (format: tweed-html) applies three layers, left to right:
+
+       theme: [flatly, brand, tweed.scss]
+
+     1. flatly           Bootswatch base theme (Bootstrap 5).
+     2. brand            Colors and fonts from _brand.yml next to the report.
+                         This creates $brand-* variables ($brand-ink,
+                         $brand-pink, ...) and sets $primary, $link-color, etc.
+     3. tweed.scss    This file: house typography, captions, tables, and
+                         reusable components.
+
+   A report that needs its own rules adds a fourth layer. Setting `theme`
+   replaces the format's list, so restate all four:
+
+       theme: [flatly, brand, _extensions/tweed/tweed.scss, report.scss]
+
+   HOW QUARTO READS THIS FILE
+   Quarto theme files are split by two special comments:
+     - scss:defaults  Variables, read BEFORE Bootstrap is built. Change a
+                      Bootstrap variable here and Bootstrap uses it everywhere.
+     - scss:rules     Ordinary CSS rules, added AFTER Bootstrap is built.
+
+   FONTS
+   Newsreader (text) and IBM Plex Mono (tables, notes) are loaded from Google
+   Fonts by _brand.yml. To use another weight, add it to the `weight:` list
+   there; this file does not load font files itself.
+
+   CONTENTS
+     1. Variables
+     2. Headings and title block
+     3. Section numbers
+     4. Report metadata and notices
+     5. Figure and table captions
+     6. Tables
+     7. Tabsets
+     8. Cover image (hero)
+     9. Floated inline images
+    10. Callout components (journal, active experiment, revision, hypotheses)
+    11. Math
+    12. Footer
+   ============================================================================= */
+
+
+/*-- scss:defaults --*/
+
+// -----------------------------------------------------------------------------
+// 1. Variables
+// -----------------------------------------------------------------------------
+
+// Fallback brand colors. _brand.yml normally defines these; the fallbacks keep
+// the theme compiling if a project's palette leaves one out.
+$brand-ink: #111111 !default;
+$brand-gray: #6C757D !default;
+$brand-pink: #F62477 !default;
+$brand-white: #FFFFFF !default;
+
+// Bootstrap heading sizes. h1 and h2 keep Bootstrap's defaults; h3 and h4 are
+// smaller than Bootstrap's so deep sections don't shout.
+$h3-font-size: 1.3rem !default;
+$h4-font-size: 0.9rem !default;
+
+// The monospace face used for tables, notes, and journal text. Comes from
+// _brand.yml (typography: monospace).
+$lv-mono: "IBM Plex Mono", monospace !default;
+
+// A sans-serif for small status text. Aktiv Grotesk is an Adobe font, so it
+// only appears for readers who have it installed; everyone else sees the
+// system sans-serif.
+$lv-sans: "Aktiv Grotesk", system-ui, sans-serif !default;
+
+// Journal callout palette: a pale blue-gray field with a near-black rule.
+$lv-journal-bg: #e4edf2 !default;
+$lv-journal-accent: #05081c !default;
+
+// Cover image heights at desktop and phone widths.
+$lv-hero-height: 520px !default;
+$lv-hero-height-sm: 280px !default;
+
+// The width at which layouts switch to their phone versions.
+$lv-breakpoint-sm: 768px !default;
+
+
+/*-- scss:rules --*/
+
+// -----------------------------------------------------------------------------
+// 2. Headings and title block
+// -----------------------------------------------------------------------------
+// The hierarchy: h1 semibold, h2 Bootstrap default, h3 italic and light,
+// h4 small caps-style (uppercase, tracked). Scoped to main.content so the
+// table of contents and title block are not affected.
+
+.quarto-title-block {
+  padding-top: 2.75rem;            // breathing room below the cover image
+
+  @media (max-width: $lv-breakpoint-sm) {
+    padding-top: 1.75rem;
+  }
+}
+
+// The subtitle sits lighter and tighter than body text.
+p.subtitle {
+  font-weight: 350;
+  line-height: 1.2;
+}
+
+main.content {
+  h1 {
+    font-weight: 600;
+    padding-bottom: 1rem;
+  }
+
+  h3 {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  h4 {
+    margin-bottom: 1.3em;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 3. Section numbers
+// -----------------------------------------------------------------------------
+// With `number-sections: true`, Quarto prints "2 Methods". This adds a period
+// so headings and the table of contents read "2. Methods".
+
+.header-section-number::after,
+.toc-section-number::after {
+  content: ".";
+}
+
+
+// -----------------------------------------------------------------------------
+// 4. Report metadata and notices
+// -----------------------------------------------------------------------------
+
+// "Data current through ..." line under the title. Usage:
+//   ::: {.data-current}
+//   **Data current through** November 18, 2026
+//   :::
+.data-current {
+  margin: 1rem 0 1.5rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.85rem;
+  line-height: 1.4;
+
+  strong {
+    color: inherit;
+    font-weight: 600;
+  }
+}
+
+// A boxed summary of terms, disclaimers, or other legal notes.
+.legal-summary {
+  margin: 1.5rem 0 4rem;
+  padding: 1rem;
+  border: 1px solid rgba($primary, 0.25);
+  border-radius: 6px;
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-body-color);
+  font-size: 0.925rem;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    font-weight: 600;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 5. Figure and table captions
+// -----------------------------------------------------------------------------
+// Captions sit above floats (fig-cap-location: top), left-aligned, with tight
+// leading. The "Figure 3:" label is wrapped in <span class="float-label"> by
+// the caption-labels.html partial so it can be styled separately.
+
+.quarto-float-fig > figcaption.quarto-float-caption {
+  line-height: 1.15;
+}
+
+.quarto-float-fig > figcaption.quarto-float-caption-top {
+  margin-bottom: 0.7em;
+}
+
+.quarto-float-fig > figcaption.quarto-float-caption,
+.quarto-float-tbl > figcaption.quarto-float-caption {
+  text-align: left;
+}
+
+// Table captions need extra force: tinytable centers its container, and the
+// caption would otherwise shrink to the table's width.
+.quarto-float-tbl figcaption.quarto-float-caption {
+  align-self: stretch;
+  width: 100%;
+  text-align: left !important;
+}
+
+.quarto-float-caption .float-label {
+  font-weight: 500;
+}
+
+
+// -----------------------------------------------------------------------------
+// 6. Tables
+// -----------------------------------------------------------------------------
+// Data tables are set in the monospace face at a small size so columns of
+// numbers line up. Rule weights and borders come from lv_table() in R.
+
+table.tinytable td,
+table.tinytable th {
+  font-family: $lv-mono;
+  font-size: 0.75rem;
+}
+
+// Table notes (tinytable puts them in <tfoot>).
+table.tinytable tfoot td {
+  text-align: left !important;
+  font-size: 0.7rem;
+}
+
+// Text-heavy tables (plans, protocols, definitions). Add the class in the
+// chunk or table call: class = "compact-design-tbl". Fixed layout keeps long
+// text wrapping inside the column instead of stretching the table.
+table.compact-design-tbl th,
+table.compact-design-tbl td {
+  line-height: 1.05;
+}
+
+.compact-design-tbl table {
+  width: 100%;
+  table-layout: fixed;
+
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.2;
+    font-family: $lv-mono;
+    font-size: 0.75rem;
+    padding: 0.5rem 0.4rem;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 7. Tabsets
+// -----------------------------------------------------------------------------
+// Keep tab labels on one row in a compact size. When there are more tabs than
+// fit, the row scrolls sideways instead of wrapping onto several lines.
+
+.panel-tabset .nav-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  .nav-link {
+    white-space: nowrap;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85em;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 8. Cover image (hero)
+// -----------------------------------------------------------------------------
+// A full-width image above the title, injected by the cover-hero.html partial
+// (include-before-body). The image itself is set in that partial:
+//
+//   <div class="report-hero" style="background-image: url('images/cover.jpg');">
+//
+// The spacing fixes below apply only when a page has a hero, so reports
+// without one keep Quarto's normal top spacing.
+
+.report-hero {
+  width: 100%;
+  height: $lv-hero-height;
+  margin: 0;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @media (max-width: $lv-breakpoint-sm) {
+    height: $lv-hero-height-sm;
+  }
+}
+
+// Remove the page-level space Quarto adds above content, so the image sits
+// flush with the top of the page. :where() adds no specificity, so these
+// rules carry the same weight as plain .navbar / .content selectors.
+:where(body:has(.report-hero)) {
+  .navbar {
+    margin-bottom: 0;
+  }
+
+  #quarto-content {
+    padding-top: 0 !important;
+  }
+
+  .content {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 9. Floated inline images
+// -----------------------------------------------------------------------------
+// A small image (often a GIF) that text wraps around. On phones it stops
+// floating and centers on its own line. Usage:
+//   ![](images/dog.gif){.lv-float-right}
+//
+// .dose-phase-gif is the original name of .lv-float-right and still works.
+
+@mixin lv-float-image($side) {
+  float: $side;
+  width: min(38%, 300px);
+  max-height: 300px;
+  border-radius: 4px;
+
+  @if $side == right {
+    margin: 0.2rem 0 1rem 1.5rem;
+  } @else {
+    margin: 0.2rem 1.5rem 1rem 0;
+  }
+
+  @media (max-width: $lv-breakpoint-sm) {
+    float: none;
+    display: block;
+    width: min(100%, 300px);
+    margin: 1rem auto;
+  }
+}
+
+.lv-float-right,
+.dose-phase-gif {
+  @include lv-float-image(right);
+}
+
+.lv-float-left {
+  @include lv-float-image(left);
+}
+
+
+// -----------------------------------------------------------------------------
+// 10. Callout components
+// -----------------------------------------------------------------------------
+
+// Journal callout: a collapsible callout styled as a personal note, with the
+// body set in the monospace face. Usage:
+//   ::: {.callout-note .fitness-journal-callout appearance="simple" icon=false}
+//   ## Heading
+//   ::: {.fit-journal}
+//   Journal text...
+//   :::
+//   :::
+.fitness-journal-callout.callout {
+  border-left: 4px solid $lv-journal-accent;
+  border-radius: 0;
+  background-color: $lv-journal-bg;
+
+  .callout-body {
+    background-color: transparent;
+  }
+
+  .callout-title-container,
+  .callout-title,
+  summary {
+    color: $lv-journal-accent;
+  }
+}
+
+.fit-journal p {
+  font-family: $lv-mono;
+  font-size: 0.8rem;
+}
+
+// Active experiment: a bordered box for a live, prospective protocol. The
+// box holds the whole experiment; the page and margin TOC stay untouched.
+// Usage:
+//   ::: {.active-experiment}
+//   ### Active Experiment: The Zone-5 Transition Probe
+//   [content, figures, tables]
+//   ::: {.active-experiment-status}
+//   Status line
+//   :::
+//   :::
+.active-experiment {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;               // stay inside the content column
+  margin: 2.25rem 0;
+  padding: 1.5rem 1.75rem 1.6rem;
+  border: 1px solid $brand-gray;
+  border-left: 0.35rem solid $brand-ink;
+  border-radius: 0.2rem;
+  color: inherit;
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    color: $brand-ink;
+  }
+
+  > h1, > h2, > h3, > h4, > h5, > h6 {
+    margin-bottom: 0.9rem;
+  }
+
+  table {
+    background-color: $brand-white;
+  }
+
+  .active-experiment-status {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid $brand-gray;
+    font-family: $lv-sans;
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
+}
+
+// Revision note: a pink-ruled band marking text that changed since an earlier
+// version. Block quotes inside it are set as monospace notes. Usage:
+//   ::: {.revision}
+//   > Revised November 14: ...
+//   :::
+.revision {
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid $brand-pink;
+  border-bottom: 1px solid $brand-pink;
+  background-color: rgba($brand-pink, 0.067);
+
+  blockquote,
+  blockquote.blockquote {
+    border-color: $brand-pink;
+    font-family: $lv-mono;
+    font-size: 0.85rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.07;
+  }
+}
+
+// Hypotheses: an indented block for numbered hypotheses or design
+// requirements. Indented on wider screens only.
+.hypotheses {
+  padding-inline: 0;
+
+  @media (min-width: $lv-breakpoint-sm) {
+    padding-left: 4em;
+    padding-right: 4em;
+  }
+}
+
+
+// -----------------------------------------------------------------------------
+// 11. Math
+// -----------------------------------------------------------------------------
+// Long display equations scroll sideways on narrow screens instead of
+// overflowing the page.
+
+mjx-container[display="true"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+
+// -----------------------------------------------------------------------------
+// 12. Footer
+// -----------------------------------------------------------------------------
+// Styles the <footer class="lv-footer"> injected by footer.html.
+
+.lv-footer {
+  margin: 3rem 0 1rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  border-top: 1px solid #ddd;
+  color: #666;
+  font-size: 0.85rem;
+  text-align: center;
+}
