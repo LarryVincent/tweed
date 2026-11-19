@@ -41,7 +41,7 @@
      7. Tabsets
      8. Cover image (hero)
      9. Floated inline images
-    10. Callout components (journal, active experiment, revision, hypotheses)
+    10. Callout components (journal, panel, revision, hypotheses)
     11. Math
     12. Footer
    ============================================================================= */
@@ -389,17 +389,19 @@ table.compact-design-tbl td {
   font-size: 0.8rem;
 }
 
-// Active experiment: a bordered box for a live, prospective protocol. The
-// box holds the whole experiment; the page and margin TOC stay untouched.
-// Usage:
-//   ::: {.active-experiment}
-//   ### Active Experiment: Name
+// Panel: a bordered box that sets a self-contained section apart from the
+// main text: a live experiment, a case study, a worked example, a sidebar.
+// A thin gray border with a heavy ink rule on the left; headings, figures,
+// and tables stay inside. An optional footer line, set off by a rule in
+// small sans-serif type, holds a status or source note. Usage:
+//   ::: {.tweed-panel}
+//   ### Panel Heading {.unnumbered .unlisted}
 //   [content, figures, tables]
-//   ::: {.active-experiment-status}
-//   Status line
+//   ::: {.tweed-panel-footer}
+//   Status: three of eight sessions complete.
 //   :::
 //   :::
-.active-experiment {
+.tweed-panel {
   display: block;
   box-sizing: border-box;
   max-width: 100%;               // stay inside the content column
@@ -431,7 +433,7 @@ table.compact-design-tbl td {
     background-color: $brand-white;
   }
 
-  .active-experiment-status {
+  .tweed-panel-footer {
     margin-top: 1.25rem;
     padding-top: 1rem;
     border-top: 1px solid $brand-gray;

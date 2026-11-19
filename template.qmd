@@ -106,13 +106,13 @@ A collapsible personal note, set in the monospace face.
 :::
 :::
 
-::: {.active-experiment}
-### Active Experiment: Name {.unnumbered .unlisted}
+::: {.tweed-panel}
+### Panel {.unnumbered .unlisted}
 
-A bordered box for a live protocol: hypotheses, figures, and tables all stay
-inside it.
+A bordered box that sets a self-contained section apart: a live experiment,
+a case study, a worked example. Figures and tables stay inside it.
 
-::: {.active-experiment-status}
+::: {.tweed-panel-footer}
 Status: three of eight sessions complete.
 :::
 :::
