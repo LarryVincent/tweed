@@ -67,7 +67,7 @@ Each layer builds on the one before it:
 | Data-currency line | `::: {.data-current}` |
 | Floated image | `![](img.gif){.tweed-float-right}` or `{.tweed-float-left}` |
 | Journal callout | `::: {.callout-note .journal-callout appearance="simple" collapse="true" icon=false}` with a `::: {.journal-text}` body |
-| Active experiment box | `::: {.active-experiment}`, with an optional `::: {.active-experiment-status}` |
+| Panel (set-apart section) | `::: {.tweed-panel}`, with an optional `::: {.tweed-panel-footer}` |
 | Revision note | `::: {.revision}` around a block quote |
 | Indented hypotheses | `::: {.hypotheses}` |
 | Text-heavy table | add class `compact-design-tbl` |
