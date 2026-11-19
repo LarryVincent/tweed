@@ -326,8 +326,6 @@ table.compact-design-tbl td {
 // A small image (often a GIF) that text wraps around. On phones it stops
 // floating and centers on its own line. Usage:
 //   ![](images/dog.gif){.lv-float-right}
-//
-// .dose-phase-gif is the original name of .lv-float-right and still works.
 
 @mixin lv-float-image($side) {
   float: $side;
@@ -349,8 +347,7 @@ table.compact-design-tbl td {
   }
 }
 
-.lv-float-right,
-.dose-phase-gif {
+.lv-float-right {
   @include lv-float-image(right);
 }
 
@@ -365,13 +362,13 @@ table.compact-design-tbl td {
 
 // Journal callout: a collapsible callout styled as a personal note, with the
 // body set in the monospace face. Usage:
-//   ::: {.callout-note .fitness-journal-callout appearance="simple" icon=false}
+//   ::: {.callout-note .journal-callout appearance="simple" icon=false}
 //   ## Heading
-//   ::: {.fit-journal}
+//   ::: {.journal-text}
 //   Journal text...
 //   :::
 //   :::
-.fitness-journal-callout.callout {
+.journal-callout.callout {
   border-left: 4px solid $lv-journal-accent;
   border-radius: 0;
   background-color: $lv-journal-bg;
@@ -387,7 +384,7 @@ table.compact-design-tbl td {
   }
 }
 
-.fit-journal p {
+.journal-text p {
   font-family: $lv-mono;
   font-size: 0.8rem;
 }
@@ -396,7 +393,7 @@ table.compact-design-tbl td {
 // box holds the whole experiment; the page and margin TOC stay untouched.
 // Usage:
 //   ::: {.active-experiment}
-//   ### Active Experiment: The Zone-5 Transition Probe
+//   ### Active Experiment: Name
 //   [content, figures, tables]
 //   ::: {.active-experiment-status}
 //   Status line

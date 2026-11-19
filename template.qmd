@@ -98,10 +98,10 @@ Second tab.
 
 ### Callout Components
 
-::: {.callout-note .fitness-journal-callout appearance="simple" collapse="true" icon=false}
+::: {.callout-note .journal-callout appearance="simple" collapse="true" icon=false}
 ## Journal Callout
 
-::: {.fit-journal}
+::: {.journal-text}
 A collapsible personal note, set in the monospace face.
 :::
 :::
