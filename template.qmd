@@ -45,9 +45,9 @@ source(here("R/tweed.R"))
 Intro subsections are unnumbered and kept out of the table of contents, so the
 report opens like an essay. Citations appear in the margin [@tufte2001].
 
-![](images/cover.jpg){.lv-float-right}
+![](images/cover.jpg){.tweed-float-right}
 
-A small image with `.lv-float-right` (or `.lv-float-left`) floats beside the
+A small image with `.tweed-float-right` (or `.tweed-float-left`) floats beside the
 text and drops onto its own line on phones. Margin notes work too.^[Footnotes
 appear in the margin because the format sets `reference-location: margin`.]
 
@@ -78,12 +78,12 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ```{r example-table}
 #| label: tbl-example
-#| tbl-cap: "Tables use lv_table(): monospace numbers, hairline rules, and flush-left placement."
+#| tbl-cap: "Tables use tweed_table(): monospace numbers, hairline rules, and flush-left placement."
 
 mtcars |>
   group_by(Cylinders = cyl) |>
   summarise(Cars = n(), `Mean MPG` = round(mean(mpg), 1)) |>
-  lv_table(width = 0.6, notes = "Source: mtcars.")
+  tweed_table(width = 0.6, notes = "Source: mtcars.")
 ```
 
 ### Tabs

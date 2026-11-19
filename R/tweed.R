@@ -25,18 +25,18 @@ if (!exists("%||%", baseenv())) `%||%` <- function(x, y) if (is.null(x)) y else 
 # One source of truth: the palette in _brand.yml. Add or change a color there,
 # and the page (SCSS) and the plots (R) both pick it up.
 
-lv_brand <- yaml::read_yaml(here::here("_brand.yml"))
+tweed_brand <- yaml::read_yaml(here::here("_brand.yml"))
 
-lv_palette <- unlist(lv_brand$color$palette, use.names = TRUE)
+tweed_palette <- unlist(tweed_brand$color$palette, use.names = TRUE)
 
 # brand_color("pink") returns "#F62477". Accepts a vector of names and stops
 # on a name that isn't in the palette, so a typo can't silently draw black.
 brand_color <- function(name) {
-  unknown <- setdiff(name, names(lv_palette))
+  unknown <- setdiff(name, names(tweed_palette))
   if (length(unknown) > 0) {
     stop("Unknown brand color: ", paste(unknown, collapse = ", "))
   }
-  unname(lv_palette[name])
+  unname(tweed_palette[name])
 }
 
 
@@ -52,7 +52,7 @@ brand_color <- function(name) {
 # Aktiv Grotesk is an Adobe font: it must be installed on the machine that
 # renders the report. Pass base_family = "sans" to use the system font.
 
-theme_lv <- function(base_family = "Aktiv Grotesk", ...) {
+theme_tweed <- function(base_family = "Aktiv Grotesk", ...) {
   base <- if (requireNamespace("hrbrthemes", quietly = TRUE)) {
     hrbrthemes::theme_ipsum(base_family = base_family, ...)
   } else {
@@ -67,7 +67,7 @@ theme_lv <- function(base_family = "Aktiv Grotesk", ...) {
     )
 }
 
-theme_set(theme_lv())
+theme_set(theme_tweed())
 
 
 # -----------------------------------------------------------------------------
@@ -75,7 +75,7 @@ theme_set(theme_lv())
 # -----------------------------------------------------------------------------
 # Tables sit flush with the left edge of the text column instead of centered.
 # These options apply to every tinytable in the report; the monospace face
-# and font size come from lv-theme.scss (section 6).
+# and font size come from _extensions/tweed/tweed.scss (section 6).
 
 options(
   tinytable_html_class = "tinytable tinytable-sm flush-left mb-4",
@@ -106,11 +106,11 @@ options(
 # row, bold column headers, and the first column left-aligned with the rest
 # right-aligned (override with `align`, e.g. "llrr").
 #
-#   lv_table(df, width = 0.8, caption = NULL, notes = "Source: ...")
+#   tweed_table(df, width = 0.8, caption = NULL, notes = "Source: ...")
 #
 # In a Quarto float, put the caption in the chunk (#| tbl-cap) and leave
 # `caption` NULL.
-lv_table <- function(df, width, caption = NULL, notes = NULL, align = NULL) {
+tweed_table <- function(df, width, caption = NULL, notes = NULL, align = NULL) {
   n <- nrow(df)
   align <- align %||% stringr::str_c("l", strrep("r", ncol(df) - 1))
 
@@ -145,3 +145,12 @@ apa_p <- function(x) {
 
 # "November 19, 2026"
 fmt_date <- function(d) format(d, "%B %d, %Y")
+
+
+# -----------------------------------------------------------------------------
+# Older names
+# -----------------------------------------------------------------------------
+# Reports written before Tweed used these names. They still work.
+
+lv_table <- tweed_table
+theme_lv <- theme_tweed
