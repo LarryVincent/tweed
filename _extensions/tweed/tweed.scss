@@ -222,8 +222,11 @@ main.content {
 // Data tables are set in the monospace face at a small size so columns of
 // numbers line up. Rule weights and borders come from tweed_table() in R.
 
-table.tinytable td,
-table.tinytable th {
+// `body` raises specificity above tinytable's own embedded rule
+// (.tinytable *:not(...) { font-family: inherit }), which loads later
+// in the page and would otherwise win the tie.
+body table.tinytable td,
+body table.tinytable th {
   font-family: $tweed-mono;
   font-size: 0.75rem;
 }
